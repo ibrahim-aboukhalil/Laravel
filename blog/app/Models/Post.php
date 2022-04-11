@@ -1,53 +1,12 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
 
-class Post
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
 {
-    public $title;
-    public $excerpt;
-    public $date;
-    public $body;
-    public $slug;
+    use HasFactory;
 
-
-    public function __construct($title, $excerpt, $date, $body, $slug)
-    {
-        $this->title = $title;
-        $this->excerpt = $excerpt;
-        $this->date = $date;
-        $this->body = $body;
-        $this->slug = $slug;
-    }
-
-    public static function find($slug)
-  {
-      $post = static::all()->firstWhere('slug', $slug);
-      if (!$post){
-          throw new ModelNotFoundException();
-      }
-
-      return $post;
-  }
-
-  public static function all()
-  {
-      return cache()->rememberForever('post.all', function (){
-          return collect(File::files(resource_path("views/posts/")))
-              ->map(function ($file){
-                  return YamlFrontMatter::parseFile($file);
-              })
-              ->map(function ($document){
-                  return new Post($document->title, $document->excerpt, $document->date, $document->body(), $document->slug);
-              })->sortByDesc('date');
-      });
-      /*alternative way*/
-//    $posts = array_map(function ($file){
-//        $document = YamlFrontMatter::parseFile($file);
-//        return new Post($document->title, $document->excerpt, $document->date, $document->body(), $document->slug);
-//    },$files);
-  }
 }
