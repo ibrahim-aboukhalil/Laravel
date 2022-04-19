@@ -10,6 +10,7 @@ class Post extends Model
     use HasFactory;
     protected $guarded = ['id']; // allow all value except this
     protected $fillable = ['title', 'excerpt', 'body']; // allow value
+    protected $with = ['category','author'];
 
     /*used to determine what attridute you want to use for routing*/
 //    public function getRouteKeyName()

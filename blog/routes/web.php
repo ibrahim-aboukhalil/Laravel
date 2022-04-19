@@ -23,7 +23,7 @@ Route::get('/', function () {
 //        logger($query->sql, $query->bindings);
 //    });
     return view('posts',[
-      'posts' => Post::latest()->with('category','author')->get()
+      'posts' => Post::latest()->get()
     ]);
 });
 
